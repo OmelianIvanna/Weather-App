@@ -483,3 +483,47 @@ margin-bottom: 20px;
     flex-shrink:0;
 
 }
+@media (max-width: 600px){
+
+    h1{
+        font-size: 46px;
+        margin-top: 40px;
+    }
+
+    #container{
+        width: 85%;
+        padding: 16px;
+        overflow: visible;
+    }
+
+    .top-row{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-row{
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #cityInput,
+    #searchBtn,
+    .location-btn{
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #historyDropdown{
+        top: 58px;
+        width: 100%;
+    }
+
+    .weather-details{
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .forecast-timeline{
+        overflow-x: auto;
+    }
+}
