@@ -37,13 +37,6 @@ const weatherOverlay = document.getElementById("weatherOverlay");
 function hideWeatherIcon() {
 }
 
-function updateBottomGradient() {
-    if (window.scrollY > 0 && document.body.scrollHeight > window.innerHeight) {
-        bottomGradient.classList.add("visible");
-    } else {
-        bottomGradient.classList.remove("visible");
-    }
-}
 
 
 locationBtn.addEventListener("click", function(){ // Get weather based on user's geolocation
@@ -60,19 +53,32 @@ fetch(url) // Fetch weather data based on geolocation
        .then(function(response) {
         return response.json();
        })
-       .then(function(data){
-       console.log(data);
-         const cityName = data.name;
-        result.textContent = 
-        `${cityName}: ${Math.round(data.main.temp)}°C`+
-        `${data.weather[0].main} ` +
-        `  Humidity: ${data.main.humidity}%` +
-        `  Wind Speed: ${Math.round(data.wind.speed)} m/s` +
-        `  Feels like: ${Math.round(data.main.feels_like)}°C`;
-        showWeatherIcon(weather);
-        
-        const weather = data.weather[0].main; // Change background based on weather condition
-        let imageUrl = "";
+      .then(function(data){
+    console.log(data);
+
+    const cityName = data.name;
+    const weather = data.weather[0].main;
+
+    const conditionText =
+    weather.charAt(0).toUpperCase() +
+    weather.slice(1).toLowerCase();
+
+    result.innerHTML = `
+        <div class="city-header">
+            ${showWeatherIcon(weather)}
+            <strong>${cityName}</strong>
+        </div>
+
+        <div class="weather-details">
+            <span>Temperature: <strong>${Math.round(data.main.temp)}°C</strong></span>
+            <span>Condition: <strong>${conditionText}</strong></span>
+            <span>Humidity: <strong>${data.main.humidity}%</strong></span>
+            <span>Wind Speed: <strong>${Math.round(data.wind.speed)} m/s</strong></span>
+            <span>Feels like: <strong>${Math.round(data.main.feels_like)}°C</strong></span>
+        </div>
+    `;
+
+    let imageUrl = "";
     
         if (weather === "Clear"){
             imageUrl = "url('images/clear.jpg')";
@@ -156,102 +162,70 @@ searchBtn.addEventListener("click", function(){
 
     result.innerHTML = "Loading...";
 
-    fetch(url)
+  fetch(url)
+.then(function(response){
+    return response.json();
+})
+.then(function(data){
 
-    .then(function(response){
-        return response.json();
-    })
+    console.log(data);
 
-    .then(function(data){
+    const cityName = data.name;
+    const weather = data.weather[0].main;
 
-        if(data.cod == 404){
+    const conditionText =
+    weather.charAt(0).toUpperCase() +
+    weather.slice(1).toLowerCase();
 
-            result.innerHTML = "City not found";
+    result.innerHTML = `
 
-            return;
-        }
+    <div class="city-header">
 
-        const weather = data.weather[0].main;
+        ${showWeatherIcon(weather)}
 
-        const conditionText =
-        weather.charAt(0).toUpperCase() +
-        weather.slice(1).toLowerCase();
+        <strong>${cityName}</strong>
 
-        result.innerHTML = `
+    </div>
 
-        <div class="city-header">
+    <div class="weather-details">
 
-            ${showWeatherIcon(weather)}
+        <span>Temperature: <strong>${Math.round(data.main.temp)}°C</strong></span>
 
-            <strong>${formattedCityName}</strong>
+        <span>Condition: <strong>${conditionText}</strong></span>
 
-        </div>
+        <span>Humidity: <strong>${data.main.humidity}%</strong></span>
 
-        <div class="weather-details">
+        <span>Wind Speed: <strong>${Math.round(data.wind.speed)} m/s</strong></span>
 
-            <span>
-                Temperature:
-                <strong>${Math.round(data.main.temp)}°C</strong>
-            </span>
+        <span>Feels like: <strong>${Math.round(data.main.feels_like)}°C</strong></span>
 
-            <span>
-                Condition:
-                <strong>${conditionText}</strong>
-            </span>
+    </div>
+    `;
 
-            <span>
-                Humidity:
-                <strong>${data.main.humidity}%</strong>
-            </span>
+    let imageUrl = "";
 
-            <span>
-                Wind Speed:
-                <strong>${Math.round(data.wind.speed)} m/s</strong>
-            </span>
+    if (weather === "Clear"){
+        imageUrl = "url('./images/clear.jpg')";
+    }else if (weather === "Clouds"){
+        imageUrl = "url('./images/clouds.jpg')";
+    }else if (weather === "Rain"){
+        imageUrl = "url('./images/rain.jpg')";
+    }else if (weather === "Snow"){
+        imageUrl = "url('./images/snow.jpg')";
+    }
 
-            <span>
-                Feels like:
-                <strong>${Math.round(data.main.feels_like)}°C</strong>
-            </span>
+    weatherOverlay.style.opacity = "0";
 
-        </div>
-        `;
+    setTimeout(function() {
 
-        cityInput.value = "";
+        weatherOverlay.style.backgroundImage = imageUrl;
+        weatherOverlay.style.opacity = "0.45";
 
-        let imageUrl = "";
+    }, 300);
 
-        if(weather === "Clear"){
-            imageUrl = "url('images/clear.jpg')";
-        }
+    saveToHistory(cityName);
 
-        else if(weather === "Clouds"){
-            imageUrl = "url('images/clouds.jpg')";
-        }
-
-        else if(weather === "Rain"){
-            imageUrl = "url('images/rain.jpg')";
-        }
-
-        else if(weather === "Snow"){
-            imageUrl = "url('images/snow.jpg')";
-        }
-
-        weatherOverlay.style.opacity = "0";
-
-        setTimeout(function(){
-
-            weatherOverlay.style.backgroundImage = imageUrl;
-
-            weatherOverlay.style.opacity = "0.45";
-
-        }, 300);
-
-        saveToHistory(formattedCityName);
-
-        historyDropdown.style.display = "none";
-
-    })
+})
 
     .catch(function(){
 
