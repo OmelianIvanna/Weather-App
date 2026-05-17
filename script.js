@@ -6,7 +6,7 @@ let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 const locationBtn = document.getElementById("locationBtn");
 const historyDropdown = document.getElementById("historyDropdown");
 
-function formatCityName(name) {
+function formatCityName(name) { // Format city name to have capitalized words
     return name
         .split(' ')
         .filter(Boolean)
@@ -14,30 +14,21 @@ function formatCityName(name) {
         .join(' ');
 }
 
-const forecastBox = document.getElementById("forecast");
-const weatherOverlay = document.getElementById("weatherOverlay"); 
+const forecastBox = document.getElementById("forecast"); // Container for 5-day forecast display
+const weatherOverlay = document.getElementById("weatherOverlay"); //block for background image based on weather condition
 
 
-    function showWeatherIcon(condition) {
-
-    let icon = "🌤️";
-
+ function showWeatherIcon(condition) { // Return appropriate weather icon based on condition
+   let icon = "🌤️";
     if (condition === "Clear") icon = "☀️";
-
     else if (condition === "Clouds") icon = "☁️";
-
     else if (condition === "Rain") icon = "🌧️";
-
     else if (condition === "Snow") icon = "❄️";
-
     return `<div class="city-weather-icon">${icon}</div>`;
-
 }
 
-function hideWeatherIcon() {
+function hideWeatherIcon() { 
 }
-
-
 
 locationBtn.addEventListener("click", function(){ // Get weather based on user's geolocation
     function error(){
@@ -46,26 +37,28 @@ locationBtn.addEventListener("click", function(){ // Get weather based on user's
     }
     navigator.geolocation.getCurrentPosition(function(position){ // Get user's current position
 
-    const lat = position.coords.latitude;
+    const lat = position.coords.latitude; 
     const lon = position.coords.longitude;
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-fetch(url) // Fetch weather data based on geolocation
+       
+    fetch(url) 
+
        .then(function(response) {
         return response.json();
        })
-      .then(function(data){
-    console.log(data);
+
+       .then(function(data){
+       console.log(data);
 
     const cityName = data.name;
     const weather = data.weather[0].main;
-
     const conditionText =
     weather.charAt(0).toUpperCase() +
     weather.slice(1).toLowerCase();
 
     result.innerHTML = `
         <div class="city-header">
-            ${showWeatherIcon(weather)}
+            ${showWeatherIcon(weather)}         
             <strong>${cityName}</strong>
         </div>
 
@@ -89,12 +82,13 @@ fetch(url) // Fetch weather data based on geolocation
         }else if (weather === "Snow"){
             imageUrl = "url('images/snow.jpg')";
         }
-        weatherOverlay.style.opacity = "0";
+        weatherOverlay.style.opacity = "0"; 
 
-        setTimeout(function() {
+    setTimeout(function() {
             weatherOverlay.style.backgroundImage = imageUrl;
             weatherOverlay.style.opacity = "0.45";
-}, 300);
+        }, 300);
+
         saveToHistory(cityName); // Save city name from geolocation search to history
        })
        .catch(function(error){ //
@@ -103,6 +97,7 @@ fetch(url) // Fetch weather data based on geolocation
         });
     }, error); 
 });
+
 function saveToHistory(city){ // Save searched city to local storage and update history display
     if (!searchHistory.includes(city)) {
         searchHistory.push(city);
@@ -114,7 +109,7 @@ function saveToHistory(city){ // Save searched city to local storage and update 
 function displayHistory(){ // Display search history as dropdown
     historyDropdown.innerHTML = "";
     
-    if (searchHistory.length === 0) {
+    if (searchHistory.length === 0) { // Hide dropdown if no history
        historyDropdown.style.display = "none";
         return;
     }
@@ -134,7 +129,7 @@ function displayHistory(){ // Display search history as dropdown
     // Add clear history button
     const clearBtn = document.createElement("div");
     clearBtn.className = "clear-history";
-    clearBtn.textContent = "Очистити історію";
+    clearBtn.textContent = "Clear History";
     clearBtn.addEventListener("click", function(){
         searchHistory = [];
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
@@ -144,22 +139,16 @@ function displayHistory(){ // Display search history as dropdown
     
 }
 
-searchBtn.addEventListener("click", function(){
-
+searchBtn.addEventListener("click", function(){ //when search button is clicked, fetch weather data for entered city and display results
     const cityName = cityInput.value.trim();
-
     if(cityName === ""){
         return;
     }
-
     const formattedCityName = formatCityName(cityName);
-
     const url =
     `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
-
     const forecastUrl =
     `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`;
-
     result.innerHTML = "Loading...";
 
   fetch(url)
@@ -178,27 +167,17 @@ searchBtn.addEventListener("click", function(){
     weather.slice(1).toLowerCase();
 
     result.innerHTML = `
-
     <div class="city-header">
-
         ${showWeatherIcon(weather)}
-
         <strong>${cityName}</strong>
-
     </div>
 
     <div class="weather-details">
-
         <span>Temperature: <strong>${Math.round(data.main.temp)}°C</strong></span>
-
         <span>Condition: <strong>${conditionText}</strong></span>
-
         <span>Humidity: <strong>${data.main.humidity}%</strong></span>
-
         <span>Wind Speed: <strong>${Math.round(data.wind.speed)} m/s</strong></span>
-
         <span>Feels like: <strong>${Math.round(data.main.feels_like)}°C</strong></span>
-
     </div>
     `;
 
@@ -228,16 +207,10 @@ searchBtn.addEventListener("click", function(){
 })
 
     .catch(function(){
-
         result.innerHTML = "Error loading weather";
-
     });
 
-
-
-
-
-    fetch(forecastUrl)
+    fetch(forecastUrl) // Fetch 5-day forecast data for the city
 
     .then(function(response){
         return response.json();
@@ -247,9 +220,8 @@ searchBtn.addEventListener("click", function(){
 
         forecastBox.innerHTML = "";
 
-        const forecastMap = {};
-        const dayOrder = [];
-
+        const forecastMap = {}; // Map to group forecast entries by day
+        const dayOrder = [];// Array to maintain the order of days for display
         const weekdayNames = [
             "Sun",
             "Mon",
@@ -262,34 +234,29 @@ searchBtn.addEventListener("click", function(){
 
         data.list.forEach(item => {
 
-            const date = new Date(item.dt * 1000);
+            const date = new Date(item.dt * 1000); // Convert Unix timestamp to JavaScript Date object
 
             const dayKey =
-            date.toISOString().split("T")[0];
+            date.toISOString().split("T")[0]; // Get date in YYYY-MM-DD format
 
-            const hour =
+            const hour = // Format hour as HH:00
             date.getHours().toString().padStart(2, "0")
             + ":00";
 
-            const iconCode = item.weather[0].icon;
+            const iconCode = item.weather[0].icon; // Get weather icon code for the forecast entry
 
-            const temp = Math.round(item.main.temp);
+            const temp = Math.round(item.main.temp); // Get temperature for the forecast entry
 
-            if(!forecastMap[dayKey]){
-
+            if(!forecastMap[dayKey]){ // If this day is not yet in the map, initialize it and add to day order
                 forecastMap[dayKey] = [];
-
                 dayOrder.push(dayKey);
-
             }
 
-            forecastMap[dayKey].push({
-
+            forecastMap[dayKey].push({ 
                 hour,
                 temp,
                 icon: iconCode,
                 description: item.weather[0].main
-
             });
 
         });
@@ -321,7 +288,7 @@ searchBtn.addEventListener("click", function(){
             const dayName =
             weekdayNames[new Date(dayKey).getDay()];
 
-            infoContainer.innerHTML = `
+            infoContainer.innerHTML = ` 
                 <div class="forecast-day-header">
                     ${dayName} (${dayKey})
                 </div>
@@ -392,31 +359,21 @@ searchBtn.addEventListener("click", function(){
 
             daysContainer.appendChild(button);
 
-            if(index === 0){
-
+            if(index === 0){ // Automatically click the first day button to show initial forecast
                 button.classList.add("active");
-
                 renderDay(dayKey);
-
             }
-
         });
-
     })
 
     .catch(function(){
-
         forecastBox.innerHTML = "";
-
     });
 });
 
 cityInput.addEventListener("keydown", function(event){
-
     if(event.key === "Enter"){
-
         event.preventDefault();
-
         searchBtn.click();
     }
 
@@ -429,12 +386,8 @@ displayHistory(); // Show history dropdown on input focus
     }
 });
 
-document.addEventListener("click", function(event){
-
+document.addEventListener("click", function(event){ // Hide history dropdown when clicking outside of it
     if(!event.target.closest(".search-row")){
-
         historyDropdown.style.display = "none";
-
     }
-
 });
