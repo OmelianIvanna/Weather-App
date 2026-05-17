@@ -27,13 +27,11 @@ const weatherOverlay = document.getElementById("weatherOverlay"); //block for ba
     return `<div class="city-weather-icon">${icon}</div>`;
 }
 
-function hideWeatherIcon() { 
-}
 
 locationBtn.addEventListener("click", function(){ // Get weather based on user's geolocation
     function error(){
         result.textContent = "Unable to retrieve your location. Please allow location access and try again.";
-        hideWeatherIcon();
+        
     }
     navigator.geolocation.getCurrentPosition(function(position){ // Get user's current position
 
@@ -93,7 +91,6 @@ locationBtn.addEventListener("click", function(){ // Get weather based on user's
        })
        .catch(function(error){ //
         result.textContent = "Error fetching weather data. Please check your connection.";
-        hideWeatherIcon();
         });
     }, error); 
 });
