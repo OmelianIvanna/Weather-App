@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>My Weather App</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Darker+Grotesque:wght@300..900&display=swap" rel="stylesheet">
+
+    </head>
+    <body> 
+        <div class="weather-overlay" id="weatherOverlay"></div>
+        <h1>Weather App</h1>
+
+<div id="container">
+        <div class="top-row">
+            <div class="search-row">
+                <input id="cityInput" type="text" placeholder="Enter city name">
+                <button id="searchBtn">Search</button>
+                 <div id="historyDropdown"></div>
+            </div>
+             
+            <button id="locationBtn" class="location-btn">Use Current Location</button>
+        </div>
+        <div class="city-header">
+            <div id="result"></div>
+        </div>
+
+        <div id="forecast"></div>
+        
+        <div class="bottom-gradient" id="bottomGradient"></div>
+</div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
