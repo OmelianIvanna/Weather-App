@@ -146,7 +146,9 @@ searchBtn.addEventListener("click", function(){ //when search button is clicked,
     `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
     const forecastUrl =
     `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`;
-    result.innerHTML = "Loading...";
+    result.innerHTML = `
+    <div class="spinner"></div>
+`;
 
   fetch(url)
 .then(function(response){
