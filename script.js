@@ -6,7 +6,8 @@ let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 const locationBtn = document.getElementById("locationBtn");
 const historyDropdown = document.getElementById("historyDropdown");
 
-function formatCityName(name) { // Format city name to have capitalized words
+ // Format city name to have capitalized words
+function formatCityName(name) {
     return name
         .split(' ')
         .filter(Boolean)
@@ -141,7 +142,6 @@ searchBtn.addEventListener("click", function(){ //when search button is clicked,
     if(cityName === ""){
         return;
     }
-    const formattedCityName = formatCityName(cityName);
     const url =
     `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
     const forecastUrl =
