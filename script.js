@@ -6,6 +6,9 @@ const apiKey = "9d189335225cf8bf0cf72bd725197142";
 let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 const locationBtn = document.getElementById("locationBtn");
 const historyDropdown = document.getElementById("historyDropdown");
+const mapBox= document.getElementById("mapBox");
+let map;
+let marker;
 
  // Format city name to have capitalized words
 function formatCityName(name) {
@@ -52,6 +55,11 @@ locationBtn.addEventListener("click", function(){ // Get weather based on user's
 
     const cityName = data.name;
     const weather = data.weather[0].main;
+
+    const lat = data.coord.lat;
+const lon = data.coord.lon;
+showMap(lat, lon, cityName);
+
     const conditionText =
     weather.charAt(0).toUpperCase() +
     weather.slice(1).toLowerCase();
@@ -165,6 +173,10 @@ searchBtn.addEventListener("click", function(){ //when search button is clicked,
 
     const cityName = data.name;
     const weather = data.weather[0].main;
+
+    const lat = data.coord.lat;
+const lon = data.coord.lon;
+showMap(lat, lon, cityName);
 
     const conditionText =
     weather.charAt(0).toUpperCase() +
@@ -374,6 +386,40 @@ searchBtn.addEventListener("click", function(){ //when search button is clicked,
         forecastBox.innerHTML = "";
     });
 });
+
+ function showMap(lat, lon, cityName) {
+mapBox.classList.add("visible");
+
+    if (!map) {
+
+        map = L.map("mapBox").setView([lat, lon], 4);
+
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                attribution: "© OpenStreetMap"
+            }
+        ).addTo(map);
+
+    } else {
+
+        map.setView([lat, lon], 4);
+
+    }
+
+    if (marker) {
+        marker.remove();
+    }
+
+    marker = L.marker([lat, lon])
+        .addTo(map)
+        .bindPopup(cityName)
+        .openPopup();
+
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 100);
+}
 
 cityInput.addEventListener("keydown", function(event){
     if(event.key === "Enter"){
