@@ -1,3 +1,15 @@
+body,
+#container,
+h1,
+#searchBtn,
+.location-btn,
+.forecast-hour-cell,
+.weather-details span,
+.forecast-day-btn,
+#cityInput {
+    transition: all 0.4s ease;
+}
+
 body { 
     margin: 0;
     min-height: 100vh;
@@ -56,13 +68,14 @@ h1 {
 }
 
 .location-btn {
-    background-color: #fb99ca;
+    background-color: rgba(255, 105, 180, 0.15);
     color: black;
-    border: 0.5px solid black ;
+    border: 1px solid #ff69b4;
     padding: 10px 16px;
     border-radius: 5px;
     cursor: pointer;
     flex-shrink: 0;
+    transition: all 0.4s ease;
 }
 
 .search-row {
@@ -88,12 +101,12 @@ h1 {
 
 #searchBtn {
     padding: 10px 20px;
-    background-color: rgba(255, 105, 180, 0.15);
+    background-color: #fb99ca;
     color: black;
-    border: 1px solid #ff69b4;
+    border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    transition: all 0.4s ease;
     font-weight: 600;
 }
 
@@ -347,6 +360,171 @@ mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 80%
     border-radius: 50%;
     margin: 30px auto;
     animation: spin 1s linear infinite;
+}
+
+.theme-switch {
+    width: 64px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1px solid black;
+    background: #ffd9e2;
+    padding: 3px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.theme-icon {
+    font-size: 13px;
+    z-index: 1;
+    width: 24px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.theme-switch-circle {
+    position: absolute;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid #ff69b4;
+    transition: transform 0.3s ease;
+}
+
+.dark .theme-switch {
+    background: #333;
+    border-color: white;
+}
+
+.dark .theme-switch-circle {
+    transform: translateX(31px);
+    background: #ffb6d9;
+}
+
+.dark #container {
+    background: #242424;
+    border-color: white;
+}
+
+.dark h1,
+.dark #result strong,
+.dark .forecast-day-header {
+    color: white;
+}
+
+.dark .weather-details span,
+.dark .forecast-hour-cell {
+    background: #333;
+    color: white;
+    border-color: #777;
+}
+
+.dark #result span {
+    color: white;
+}
+
+.dark .forecast-day-btn {
+    background: #333;
+    color: white;
+    border-color: #777;
+}
+
+.dark .forecast-day-btn.active,
+.dark .forecast-day-btn:hover {
+    background: #ff69b4;
+    color: black;
+}
+
+.dark {
+    background: linear-gradient(
+        to bottom,
+        #151515 0%,
+        #24202a 55%,
+        #3a2432 100%
+    );
+    color: white;
+}
+
+.dark h1 {
+    color: #ffb6d9;
+    text-shadow: 0 0 12px rgba(255, 105, 180, 0.45);
+        -webkit-text-stroke: 0.4px black;
+}
+
+.dark #container {
+    background: rgba(35, 35, 35, 0.88);
+    border-color: white;
+}
+
+.dark #searchBtn {
+    background-color: #ff8fc7;
+    color: black;
+    border-color: white;
+}
+
+.dark .location-btn {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: white;
+    border-color: white;
+}
+
+.dark #cityInput {
+    background-color: #222;
+    color: white;
+    border-color: white;
+}
+
+.dark #cityInput::placeholder {
+    color: #ccc;
+}
+
+.dark .weather-details span,
+.dark .forecast-hour-cell {
+    background: #2f2f2f;
+    color: white;
+    border-color: white;
+}
+
+.dark #result span,
+.dark #result strong,
+.dark .forecast-day-header {
+    color: white;
+}
+
+.dark .forecast-day-btn {
+    background: #2f2f2f;
+    color: white;
+    border-color: white;
+}
+
+.dark .forecast-day-btn.active,
+.dark .forecast-day-btn:hover {
+    background: #ff8fc7;
+    color: black;
+    border-color: white;
+}
+
+.dark #historyDropdown {
+    background: #2f2f2f;
+    border-color: white;
+}
+
+.dark .history-item {
+    color: white;
+    border-bottom: 1px solid #555;
+}
+
+.dark .history-item:hover {
+    background: #444;
+}
+
+.dark .clear-history {
+    color: #ff8fc7;
 }
 
 @keyframes spin {
