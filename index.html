@@ -12,6 +12,21 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     </head>
     <body> 
+<div id="unitModal" class="unit-modal">
+    <div class="unit-modal-content">
+
+        <button id="closeUnitModalBtn" class="unit-close-btn">×</button>
+
+        <h2>Choose Temperature Unit</h2>
+
+        <div class="unit-buttons">
+            <button id="celsiusBtn">°C Celsius</button>
+            <button id="fahrenheitBtn">°F Fahrenheit</button>
+        </div>
+
+    </div>
+</div>
+
         <div class="weather-overlay" id="weatherOverlay"></div>
         <h1>Weather App</h1>
 
@@ -30,6 +45,8 @@
     <span class="theme-icon moon">🌙</span>
     <span class="theme-switch-circle"></span>
            </button>
+
+           <button id="unitSettingsBtn" class="unit-settings-btn">⚙️</button>
         </div>
         <div class="city-header">
             <div id="result"></div>
