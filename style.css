@@ -527,6 +527,38 @@ mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 80%
     color: #ff8fc7;
 }
 
+.dark .unit-modal-content {
+    background: #2f2f2f;
+    color: white;
+    border-color: white;
+}
+
+.dark .unit-modal-content h2 {
+    color: white;
+}
+
+.dark .unit-buttons button {
+    background: #333;
+    color: white;
+    border-color: #777;
+}
+
+.dark .unit-buttons button.active-unit {
+    background: rgba(255, 143, 199, 0.2);
+    border: 2px solid #ff8fc7;
+    color: white;
+}
+
+.dark .unit-close-btn {
+    background: #333;
+    color: white;
+    border-color: white;
+}
+
+.dark #mapBox.visible {
+    border-color: white;
+}
+
 @keyframes spin {
 
     0% {
