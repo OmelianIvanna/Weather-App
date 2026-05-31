@@ -391,8 +391,15 @@ showMap(lat, lon, cityName);
 mapBox.classList.add("visible");
 
     if (!map) {
-
-        map = L.map("mapBox").setView([lat, lon], 4);
+      map = L.map("mapBox", {
+    dragging: false,
+    touchZoom: false,
+    scrollWheelZoom: false,
+    doubleClickZoom: false,
+    boxZoom: false,
+    keyboard: false,
+    zoomControl: true
+}).setView([lat, lon], 5);
 
         L.tileLayer(
             "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -403,7 +410,7 @@ mapBox.classList.add("visible");
 
     } else {
 
-        map.setView([lat, lon], 4);
+        map.setView([lat, lon], 5);
 
     }
 
@@ -416,9 +423,12 @@ mapBox.classList.add("visible");
         .bindPopup(cityName)
         .openPopup();
 
+        map.panTo([lat, lon]);
+
     setTimeout(() => {
-        map.invalidateSize();
-    }, 100);
+    map.invalidateSize();
+    map.setView([lat, lon], map.getZoom());
+}, 400);
 }
 
 cityInput.addEventListener("keydown", function(event){
