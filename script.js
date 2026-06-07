@@ -428,7 +428,7 @@ mapBox.classList.add("visible");
     setTimeout(() => {
     map.invalidateSize();
     map.setView([lat, lon], map.getZoom());
-}, 400);
+}, 500);
 }
 
 cityInput.addEventListener("keydown", function(event){
