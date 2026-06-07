@@ -1,3 +1,4 @@
+const unitSettingsBtn = document.getElementById("unitSettingsBtn");
 const cityInput = document.getElementById("cityInput");
 const searchBtn = document.getElementById("searchBtn");
 const themeBtn = document.getElementById("themeBtn");
@@ -7,8 +8,86 @@ let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 const locationBtn = document.getElementById("locationBtn");
 const historyDropdown = document.getElementById("historyDropdown");
 const mapBox= document.getElementById("mapBox");
+
 let map;
 let marker;
+
+const unitModal = document.getElementById("unitModal");
+const celsiusBtn = document.getElementById("celsiusBtn");
+const fahrenheitBtn = document.getElementById("fahrenheitBtn");
+const closeUnitModalBtn = document.getElementById("closeUnitModalBtn");
+
+let temperatureUnit =
+localStorage.getItem("temperatureUnit");
+let lastCityName = "";
+
+function openUnitModal() {
+    unitModal.classList.add("show");
+}
+
+function closeUnitModal() {
+    unitModal.classList.remove("show");
+}
+
+function updateActiveUnitButton() {
+    celsiusBtn.classList.remove("active-unit");
+    fahrenheitBtn.classList.remove("active-unit");
+
+    if (temperatureUnit === "C") {
+        celsiusBtn.classList.add("active-unit");
+    }
+
+    if (temperatureUnit === "F") {
+        fahrenheitBtn.classList.add("active-unit");
+    }
+}
+
+if (!temperatureUnit) {
+    openUnitModal();
+} else {
+    updateActiveUnitButton();
+}
+
+unitSettingsBtn.addEventListener("click", function(){
+    updateActiveUnitButton();
+    openUnitModal();
+});
+
+closeUnitModalBtn.addEventListener("click", function(){
+    closeUnitModal();
+});
+
+celsiusBtn.addEventListener("click", function(){
+    temperatureUnit = "C";
+    localStorage.setItem("temperatureUnit", "C");
+    updateActiveUnitButton();
+    closeUnitModal();
+
+    if (lastCityName !== "") {
+        cityInput.value = lastCityName;
+        searchBtn.click();
+    }
+});
+
+fahrenheitBtn.addEventListener("click", function(){
+    temperatureUnit = "F";
+    localStorage.setItem("temperatureUnit", "F");
+    updateActiveUnitButton();
+    closeUnitModal();
+
+    if (lastCityName !== "") {
+        cityInput.value = lastCityName;
+        searchBtn.click();
+    }
+});
+
+function formatTemperature(tempC) {
+    if (temperatureUnit === "F") {
+        return Math.round((tempC * 9 / 5) + 32) + "°F";
+    }
+
+    return Math.round(tempC) + "°C";
+}
 
  // Format city name to have capitalized words
 function formatCityName(name) {
@@ -32,7 +111,6 @@ const weatherOverlay = document.getElementById("weatherOverlay"); //block for ba
     return `<div class="city-weather-icon">${icon}</div>`;
 }
 
-
 locationBtn.addEventListener("click", function(){ // Get weather based on user's geolocation
     function error(){
         result.textContent = "Unable to retrieve your location. Please allow location access and try again.";
@@ -55,6 +133,7 @@ locationBtn.addEventListener("click", function(){ // Get weather based on user's
 
     const cityName = data.name;
     const weather = data.weather[0].main;
+    lastCityName = cityName;
 
     const lat = data.coord.lat;
 const lon = data.coord.lon;
@@ -71,11 +150,11 @@ showMap(lat, lon, cityName);
         </div>
 
         <div class="weather-details">
-            <span>Temperature: <strong>${Math.round(data.main.temp)}°C</strong></span>
+            <span>Temperature: <strong>${formatTemperature(data.main.temp)}</strong></span>
             <span>Condition: <strong>${conditionText}</strong></span>
             <span>Humidity: <strong>${data.main.humidity}%</strong></span>
             <span>Wind Speed: <strong>${Math.round(data.wind.speed)} m/s</strong></span>
-            <span>Feels like: <strong>${Math.round(data.main.feels_like)}°C</strong></span>
+            <span>Feels like: <strong>${formatTemperature(data.main.feels_like)}</strong></span>
         </div>
     `;
 
@@ -173,6 +252,7 @@ searchBtn.addEventListener("click", function(){ //when search button is clicked,
 
     const cityName = data.name;
     const weather = data.weather[0].main;
+    lastCityName = cityName;
 
     const lat = data.coord.lat;
 const lon = data.coord.lon;
@@ -189,11 +269,11 @@ showMap(lat, lon, cityName);
     </div>
 
     <div class="weather-details">
-        <span>Temperature: <strong>${Math.round(data.main.temp)}°C</strong></span>
+        <span>Temperature: <strong>${formatTemperature(data.main.temp)}</strong></span>
         <span>Condition: <strong>${conditionText}</strong></span>
         <span>Humidity: <strong>${data.main.humidity}%</strong></span>
         <span>Wind Speed: <strong>${Math.round(data.wind.speed)} m/s</strong></span>
-        <span>Feels like: <strong>${Math.round(data.main.feels_like)}°C</strong></span>
+        <span>Feels like: <strong>${formatTemperature(data.main.feels_like)}</strong></span>
     </div>
     `;
 
@@ -333,7 +413,7 @@ showMap(lat, lon, cityName);
                     src="https://openweathermap.org/img/wn/${item.icon}.png">
 
                     <div class="forecast-hour-temp">
-                        ${item.temp}°C
+                        ${formatTemperature(item.temp)}
                     </div>
                 `;
 

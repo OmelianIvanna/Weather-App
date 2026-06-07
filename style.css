@@ -1,3 +1,110 @@
+.unit-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.unit-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.unit-modal-content {
+    position: relative;
+    background: #fff9ef;
+    border: 1px solid #ffb6d9;
+    border-radius: 16px;
+    padding: 28px;
+    min-width: 280px;
+    text-align: center;
+    transform: scale(0.94);
+    transition: transform 0.4s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+.unit-modal.show .unit-modal-content {
+    transform: scale(1);
+}
+
+.unit-modal-content h2 {
+    margin: 0 0 18px;
+    color: #333;
+    font-size: 22px;
+}
+
+.unit-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    background: white;
+    color: black;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.unit-buttons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+}
+
+.unit-buttons button {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    color: black;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.unit-buttons button.active-unit {
+    background: #ffd9e2;
+    border: 2px solid #ff69b4;
+    color: black;
+    font-weight: 700;
+    box-shadow: 0 0 8px rgba(255, 105, 180, 0.25);
+}
+
+.unit-buttons button:hover,
+.unit-close-btn:hover {
+    background-color: rgba(255, 105, 180, 0.15);
+    border-color: #ff69b4;
+}
+
+.unit-settings-btn {
+    padding: 10px 16px;
+    height: 38px;
+    border-radius: 5px;
+    border: 1px solid #ff69b4;
+    background-color: rgba(255, 105, 180, 0.15);
+    color: black;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: 16px;
+    line-height: 1;
+    transition: all 0.4s ease;
+}
+
+.unit-settings-btn:hover {
+    background-color: rgba(255, 105, 180, 0.25);
+    transform: scale(1.02);
+}
+
 body,
 #container,
 h1,
