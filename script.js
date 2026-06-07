@@ -1,5 +1,6 @@
 const cityInput = document.getElementById("cityInput");
 const searchBtn = document.getElementById("searchBtn");
+const themeBtn = document.getElementById("themeBtn");
 const result = document.getElementById("result");
 const apiKey = "9d189335225cf8bf0cf72bd725197142";
 let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
@@ -136,6 +137,10 @@ function displayHistory(){ // Display search history as dropdown
     historyDropdown.appendChild(clearBtn);
     
 }
+
+themeBtn.addEventListener("click", function(){
+    document.body.classList.toggle("dark"); // Toggle dark theme class on body
+});
 
 searchBtn.addEventListener("click", function(){ //when search button is clicked, fetch weather data for entered city and display results
     const cityName = cityInput.value.trim();
